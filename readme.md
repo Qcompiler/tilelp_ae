@@ -6,8 +6,12 @@
            -v ./cache:/app/cache \
            -v ./results:/app/results \
            -d --name tilus-artifact docker.1ms.run/yyding/tilus-artifacts:latest
-           ```
+```
+# 进入容器
 
+```
+srun -N 1 --pty --gres=gpu:4090:1 docker exec -it  2555ed0cba20 bash
+```
 
 # 加载环境
 
