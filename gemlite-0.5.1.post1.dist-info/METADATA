@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: gemlite
+Version: 0.5.1.post1
+Home-page: https://github.com/mobiusml/gemlite/
+Author: Dr. Hicham Badri
+Author-email: hicham@mobiuslabs.com
+License: Apache 2
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: tqdm
+Dynamic: author
+Dynamic: author-email
+Dynamic: home-page
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist

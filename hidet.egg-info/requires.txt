@@ -1,0 +1,14 @@
+numpy>=1.23
+psutil
+tqdm
+tabulate
+astunparse
+click
+packaging
+requests
+filelock
+tomlkit
+
+[cuda]
+cuda-python>=11.6.1
+nvtx

@@ -1,0 +1,6 @@
+# First exclude experiments folder but then include specific subfolders
+build
+build/
+__pycache/
+cache/
+fp6_llm/

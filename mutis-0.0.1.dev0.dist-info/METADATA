@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: mutis
+Version: 0.0.1.dev0
+Summary: Mutis
+Home-page: 
+Platform: linux
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Dynamic: description-content-type
+Dynamic: keywords
+Dynamic: platform
+Dynamic: requires-python
+Dynamic: summary
