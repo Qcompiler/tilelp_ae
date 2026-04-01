@@ -4,3 +4,6 @@ build/
 __pycache/
 cache/
 fp6_llm/
+results/
+marlin/
+triton_build_dir/

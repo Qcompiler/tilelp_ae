@@ -28,7 +28,7 @@ if arch < 90:
     supported_runners.append('bitblas')
 def get_figure9_configs():
     configs = []
-    for m in [1, 2]:
+    for m in [1, ]:
         for k, n in [
             (8192, 8192),
             (12288, 8192),

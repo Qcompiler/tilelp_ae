@@ -259,7 +259,7 @@ def main():
     results_dir = args.results_dir
     os.makedirs(results_dir, exist_ok=True)
 
-    txt_path = args.input_txt or os.path.join(results_dir, "breakdown.txt")
+    txt_path = args.input_txt or os.path.join(results_dir, "figure9.txt")
    
     df = run_experiments()
     with open(txt_path, 'w') as f:

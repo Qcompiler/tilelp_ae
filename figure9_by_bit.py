@@ -17,7 +17,7 @@ pd.set_option('display.width', 1000)
 plt.rcParams['font.family'] = 'Liberation Sans'
 plt.rcParams['font.size'] = 12
 
-baseline = 'torch-f16'
+baseline = 'cutlass'
 
 supported_runners = ['cutlass', 'marlin', 'tilelp', 'triton', 'mutis']
 
@@ -31,6 +31,14 @@ if arch < 90:
     supported_runners.append('bitblas')
     supported_runners_2bit.append('bitblas')
     supported_runners_8bit.append('bitblas')
+
+import argparse
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('--kk', type=int, default=8192, help='K value')
+parser.add_argument('--nn', type=int, default=57344, help='N value')
+args = parser.parse_args()
+kk = args.kk
+nn = args.nn
 def get_figure9_configs():
     configs = []
     for m in [1, ]:
@@ -40,7 +48,7 @@ def get_figure9_configs():
             # (16384, 8192),
             # (28672, 8192),
             # (8192, 16384),
-            (8192, 57344),
+            (kk, nn),
             # (28672, 8192),
         ]:
             for (b_dtype, runners) in [
@@ -112,12 +120,14 @@ def plot_by_m(df: DataFrame, out_fname: str):
     """
     m_values = sorted(df['m'].unique())
 
-    fig, axes = plt.subplots(1, 2, figsize=(14, 4))
-    axes = axes
+    fig, axes = plt.subplots(1, 1, figsize=(5, 3))
+    axes = [axes]
+
+    
     for ax_idx, (ax, m_val) in enumerate(zip(axes, m_values)):
         df_m = df[df['m'] == m_val]
 
-        dtype_order = [ 'uint8', 'float6_e3m2', 'uint4b', 'uint2b']
+        dtype_order = [ 'uint8',  'uint4b', 'uint2b']
         dtypes = [dt for dt in dtype_order if dt in set(df_m['b_dtype'])]
 
         # All executors that appear anywhere, in rank order
@@ -141,6 +151,25 @@ def plot_by_m(df: DataFrame, out_fname: str):
             if not present:
                 continue
 
+            if dt == "uint2b":
+                executor = 'torch-f16'
+                row = df_m[(df_m['runner'] == executor)]
+                spdup = row['speedup'].mean()
+                label = executor2label.get(executor, executor)
+                bar = ax.bar(
+                    current_x,
+                    spdup,
+                    width=bar_w,
+                    color=fill_color(colors[executor2color[executor]][0]),
+                    edgecolor=colors[-1][0],
+                    linewidth=0.8,
+                    label=label if executor not in added_labels else '_nolegend_',
+                )
+                added_labels.add(executor)
+                ax.bar_label(bar, labels=[f'{spdup:.2f}x'], padding=2,
+                                fontsize=9, rotation=90)
+                current_x += bar_w
+                
             group_start = current_x
             for executor in present:
                 row = df_m[(df_m['b_dtype'] == dt) & (df_m['runner'] == executor)]
@@ -165,7 +194,10 @@ def plot_by_m(df: DataFrame, out_fname: str):
 
         # Baseline
         ax.axhline(y=1, color=colors[-1][-1], linewidth=1, linestyle='--',
-                   label='cuBLAS (fp16)' if ax_idx == 0 else None)
+                   label='Cutlass (fp16)' if ax_idx == 0 else None)
+        
+
+
 
         ymax = df_m['speedup'].max() if len(df_m) > 0 else 2.0
         ax.set_ylim(0, ymax * 1.35)
@@ -177,7 +209,7 @@ def plot_by_m(df: DataFrame, out_fname: str):
 
     handles, labels = axes[0].get_legend_handles_labels()
     fig.legend(handles, labels, bbox_to_anchor=(0.5, 0.98), loc='lower center',
-               ncol=len(all_executors) + 1, fontsize=10)
+               ncol=(len(all_executors) + 1) // 2, fontsize=10)
 
     fig.tight_layout(rect=[0, 0, 1, 0.95])
     os.makedirs(os.path.dirname(out_fname), exist_ok=True)
@@ -210,11 +242,10 @@ def main():
     
     # Process for each m value
     df_m1 = process(df_raw, gpu=gpu, m_value=1)
-    df_m2 = process(df_raw, gpu=gpu, m_value=1)
     
     # Combine and plot
-    combined_df = pd.concat([df_m1, df_m2])
-    out_path = os.path.join(results_dir, f'gpu_{gpu}_figure9_by_bit.pdf')
+    combined_df = pd.concat([df_m1, ])
+    out_path = os.path.join(results_dir, f'gpu_{gpu}_figure9_by_bit_{kk}_{nn}.pdf')
     plot_by_m(combined_df, out_fname=out_path)
 
 

@@ -589,7 +589,7 @@ def gemm_forward(x: Tensor, W_q: Tensor, scales: Tensor, zeros: Tensor, scales_x
         load_scales_as_block = load_scales_as_block,
         input_dtype  = DTYPE_TO_TRITON[input_dtype],
         output_dtype = TORCH_DTYPE_TO_TRITON[output.dtype],
-        acc_dtype    = DTYPE_TO_TRITON[acc_dtype],
+        acc_dtype    = tl.float32,
         meta_dtype   = DTYPE_TO_TRITON[meta_dtype],
         ################################################
         channel_scale_mode = channel_scale_mode,

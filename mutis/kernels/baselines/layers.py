@@ -979,11 +979,12 @@ def w4a16_micro_kernel(
         
         a = tl.load(A_ptr,  eviction_policy = evict)
         a_ = tl.load(A_ptr + 1, eviction_policy = evict)
+        scales = tl.load(scales_ptr + row_id, eviction_policy = evict_scales)
         a1, a2, a3, a4 = dequanti_tensorRT_llm(a) 
         a5, a6, a7, a8 = dequanti_tensorRT_llm(a_)
         
-        acc += sum_4_half(a1, a2, x1, x2) + sum_4_half(a3, a4, x3, x4) + \
-         sum_4_half(a5, a6, x5, x6) + sum_4_half(a7, a8, x7, x8)
+        acc += (sum_4_half(a1, a2, x1, x2) + sum_4_half(a3, a4, x3, x4) + \
+         sum_4_half(a5, a6, x5, x6) + sum_4_half(a7, a8, x7, x8)) * scales
  
   
 
@@ -991,8 +992,8 @@ def w4a16_micro_kernel(
         x_ptr += (BLOCK_SIZE * 2) * 2
 
     acc = tl.sum(acc, axis=0) 
-    scales = tl.load(scales_ptr + row_id, eviction_policy = evict_scales)
-    acc = acc * scales
+    
+
     tl.store(y_ptr + row_id, acc)
 
 # === 生成的 w4a16_micro ===
@@ -1019,6 +1020,7 @@ def w4a16_micro(A: torch.Tensor, vector: torch.Tensor, output, scales):
     return kernel
 
 
+from tilelpbatch import gemm_splitK_forward
 class TilelpLayer(MatmulLayer):
     """W4A16 / W8A16 GEMV via tilelp DSL kernels."""
 
@@ -1052,6 +1054,21 @@ class TilelpLayer(MatmulLayer):
             self.q_weight, self.scales = gen_quant4_my(n, k, torch.clone(weight),
                                                        groupsize=-1, tile=1)
 
+            from tilelp.common.common import pack_gemlite
+            from tilelp.common.common import generate_randint, gen_quant4, gen_quant4_my, gen_quant4_uint8
+            from tilelp.common.common import pack_gemlite
+            BLOCK_SIZE_K = 128
+            q_weight, scales  = gen_quant4_uint8(n, k, torch.clone(weight),
+                                          block_size = BLOCK_SIZE_K,
+                                          groupsize = 128, tile = 1)
+
+
+
+            self.W_q, self.W_scales, _ = pack_gemlite(
+                q_weight, scales, None  ,
+                W_nbits=4, group_size=group_size,
+                in_features=k, out_features=n,
+            )
     @staticmethod
     def supported_pairs():
         return [(float16, int4b), (float16, uint4b), (float16, uint8), (float16, uint2b)]
@@ -1083,9 +1100,14 @@ class TilelpLayer(MatmulLayer):
             return out
         else:
             # INT4 path
-            out = torch.empty(self.m, self.n, dtype=torch.float16, device=a.device)
-            for i in range(self.m):
-                w4a16(self.q_weight, a[i:i+1], out[i], self.scales)
+            
+            if self.m == 1:
+                out = torch.empty(self.m, self.n, dtype=torch.float16, device=a.device)
+                w4a16(self.q_weight, a, out, self.scales)
+            else:
+                out, _ = gemm_splitK_forward(a, self.W_q, 
+                                 self.W_scales, self.group_size, elements_per_sample=8) 
+
             return out
 
 

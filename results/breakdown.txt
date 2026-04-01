@@ -1,9 +1,9 @@
                  device                                        runner a_dtype b_dtype  group_size  m    k     n  latency
-NVIDIA-GeForce-RTX-4090                                     torch-f16 float16 float16          -1  1 8192 57344 1.067952
-NVIDIA-GeForce-RTX-4090                                       cutlass float16  uint4b         128  1 8192 57344 0.977920
-NVIDIA-GeForce-RTX-4090                                        triton float16  uint4b         128  1 8192 57344 0.514048
+NVIDIA-GeForce-RTX-4090                                     torch-f16 float16 float16          -1  1 8192 57344 1.070080
+NVIDIA-GeForce-RTX-4090                                       cutlass float16  uint4b         128  1 8192 57344 0.977792
+NVIDIA-GeForce-RTX-4090                                        triton float16  uint4b         128  1 8192 57344 0.425856
 NVIDIA-GeForce-RTX-4090                                         mutis float16  uint4b         128  1 8192 57344 0.271360
-NVIDIA-GeForce-RTX-4090                        tilelp_acc_in_register float16  uint4b         128  1 8192 57344 0.294912
-NVIDIA-GeForce-RTX-4090                                  tilelp_evict float16  uint4b         128  1 8192 57344 0.252928
-NVIDIA-GeForce-RTX-4090 tilelp_no_acc_in_register_no_opt_micro_kernel float16  uint4b         128  1 8192 57344 0.002048
-NVIDIA-GeForce-RTX-4090                                        tilelp float16  uint4b         128  1 8192 57344 0.244736
+NVIDIA-GeForce-RTX-4090                        tilelp_acc_in_register float16  uint4b         128  1 8192 57344 0.294064
+NVIDIA-GeForce-RTX-4090                                  tilelp_evict float16  uint4b         128  1 8192 57344 0.253024
+NVIDIA-GeForce-RTX-4090 tilelp_no_acc_in_register_no_opt_micro_kernel float16  uint4b         128  1 8192 57344 0.001024
+NVIDIA-GeForce-RTX-4090                                        tilelp float16  uint4b         128  1 8192 57344 0.242704

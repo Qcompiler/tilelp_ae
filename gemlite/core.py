@@ -57,7 +57,8 @@ GEMLITE_TRITON_KERNELS = [
     gemv,
     gemv_revsplitK,
     gemv_splitK,
-    gemm_splitK, #gemm_splitK / gemm_splitK_persistent
+    gemm_splitK,
+    # gemm_splitK_persistent, #gemm_splitK / gemm_splitK_persistent
     gemm,
 ]
 

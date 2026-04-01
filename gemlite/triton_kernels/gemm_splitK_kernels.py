@@ -849,6 +849,8 @@ def gemm_splitK_forward(x: Tensor, W_q: Tensor, scales: Tensor, zeros: Tensor, s
              
         load_scales_as_block = False
 
+    acc_type = tl.float32
+ 
     gemm_splitK_kernel[grid](
         x, W_q, output, 
         scales, zeros, scales_x,
@@ -866,7 +868,7 @@ def gemm_splitK_forward(x: Tensor, W_q: Tensor, scales: Tensor, zeros: Tensor, s
         load_scales_as_block = load_scales_as_block,
         input_dtype  = DTYPE_TO_TRITON[input_dtype],
         output_dtype = TORCH_DTYPE_TO_TRITON[output.dtype],
-        acc_dtype    = DTYPE_TO_TRITON[acc_dtype],
+        acc_dtype    = acc_type,
         meta_dtype   = DTYPE_TO_TRITON[meta_dtype],
         ################################################
         channel_scale_mode = channel_scale_mode,
