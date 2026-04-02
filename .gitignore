@@ -8,3 +8,4 @@ results/
 marlin/
 triton_build_dir/
 vllm_install/
+tmp/
