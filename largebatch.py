@@ -25,16 +25,16 @@ baseline = 'cutlass'
 # supported_runners = ['cutlass', 'marlin', 'tilelp', 'triton', 'mutis', 'gemlite']
 
 # baseline = 'torch-f16'
-supported_runners = [  'cutlass', 'marlin',   'triton', 'mutis', 'gemlite', 'tilelp']
+supported_runners = [  'cutlass',    'triton', 'mutis', 'gemlite', 'tilelp']
 import torch
 arch = torch.cuda.get_device_properties(0).major * 10 + torch.cuda.get_device_properties(0).minor
 print(f"GPU Architecture: {arch}")
-# if arch < 90:
-#     supported_runners.append('bitblas')
+if arch < 90:
+    supported_runners.append('bitblas')
 
 
-M_VALUES = [ 256, ]
-
+M_VALUES = range(128, 2049, 128)
+M_VALUES =  [64] + list(M_VALUES)
 
 def get_figure9_configs():
     configs = []
@@ -118,7 +118,7 @@ def plot_by_m(df: DataFrame, out_fname: str):
         key=lambda x: ranked_executors.index(x)
     )
 
-    fig, ax = plt.subplots(1, 1, figsize=(10, 4))
+    fig, ax = plt.subplots(1, 1, figsize=(6, 4))
 
     for executor in runners:
         df_e = df[df['runner'] == executor]
@@ -139,12 +139,16 @@ def plot_by_m(df: DataFrame, out_fname: str):
 
     ax.set_xlabel('m')
     ax.set_ylabel('TFLOPS')
-    ax.set_xticks(m_values)
+    xtick_step = 2
+    sparse_xticks = list(m_values[::xtick_step])
+    if sparse_xticks[-1] != m_values[-1]:
+        sparse_xticks.append(m_values[-1])
+    ax.set_xticks(sparse_xticks)
     ax.grid(axis='both', alpha=0.3, linestyle='--', linewidth=0.5)
 
     handles, labels = ax.get_legend_handles_labels()
-    fig.legend(handles, labels, bbox_to_anchor=(0.5, 0.98), loc='lower center',
-               ncol=max(1, len(runners)), fontsize=10)
+    fig.legend(handles, labels, bbox_to_anchor=(0.5, 0.98), loc='center',
+               ncol=max(1, len(runners)) // 2, fontsize=10)
 
     fig.tight_layout(rect=[0, 0, 1, 0.93])
     os.makedirs(os.path.dirname(out_fname), exist_ok=True)

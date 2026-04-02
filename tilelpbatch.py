@@ -238,6 +238,14 @@ def get_fast_autotune_config_nvidia():
                                         'BLOCK_SIZE_K': 32, 'SPLIT_K':split_k, 'GROUP_SIZE_M':8,
                                             'A_load_order':2}, num_stages=stages,
                         num_warps=4)) 
+            configs.append(triton.Config({'BLOCK_SIZE_M': 256, 'BLOCK_SIZE_N': 128, 
+                                        'BLOCK_SIZE_K': 32, 'SPLIT_K':split_k, 'GROUP_SIZE_M':8,
+                                            'A_load_order':2}, num_stages=stages,
+                        num_warps=4)) 
+            configs.append(triton.Config({'BLOCK_SIZE_M': 64, 'BLOCK_SIZE_N': 128, 
+                                        'BLOCK_SIZE_K': 32, 'SPLIT_K':split_k, 'GROUP_SIZE_M':8,
+                                            'A_load_order':2}, num_stages=stages,
+                        num_warps=4)) 
     # configs.append(triton.Config({'BLOCK_SIZE_M':16, 'BLOCK_SIZE_N':32,  'BLOCK_SIZE_K':64,  'SPLIT_K':4, 'GROUP_SIZE_M':8, 'A_load_order':0}, num_warps=4, num_stages=4))
     # configs.append(triton.Config({'BLOCK_SIZE_M':16, 'BLOCK_SIZE_N':32,  'BLOCK_SIZE_K':128, 'SPLIT_K':4, 'GROUP_SIZE_M':8, 'A_load_order':2}, num_warps=4, num_stages=4))
     # configs.append(triton.Config({'BLOCK_SIZE_M':16, 'BLOCK_SIZE_N':32,  'BLOCK_SIZE_K':256, 'SPLIT_K':1, 'GROUP_SIZE_M':8, 'A_load_order':0}, num_warps=4, num_stages=5))

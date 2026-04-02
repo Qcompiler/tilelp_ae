@@ -16,36 +16,22 @@ srun -N 1 --pty --gres=gpu:4090:1 docker exec -it  2555ed0cba20 bash
 # 加载环境
 
 ```
-pip uninstall marlin
-cd marlin
-export TORCH_CUDA_ARCH_LIST='9.0;8.0;8.9;8.6'
-python setup.py install
-pip uninstall vllm
-pip install gemlite
-pip install hqq
-export PYTHONPATH=/home/chenyidong/tilus-artifacts/artifacts/tilelp
+cd /home/chenyidong/tilus-artifacts/artifacts
+export GPUID=0
+rm -rf cache/mutis && rm -rf cache/bitblas && rm -r /root/.cache/ && rm -rf ./results/figure9.txt
 ```
 
 # 实验
-1. 不同bit
-bash runbit.sh
+
+1. figure1
+
+bash run_figure1.sh
 
 2. 不同shape
 
-bash runfigure9.sh
+bash run_shape.sh
 
-3. 不同的batch
 
-bash runbatch.sh
+3. 不同 bit
 
-4. breakdown
-
-bash runbreakdown.sh
-
-5.  end2end
-
-需要补充
-bash runend2end.sh
-
-6. 在AMD GPU上运行
-需要补充
+bash run_bit.sh
