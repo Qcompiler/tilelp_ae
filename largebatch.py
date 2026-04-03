@@ -25,24 +25,27 @@ baseline = 'cutlass'
 # supported_runners = ['cutlass', 'marlin', 'tilelp', 'triton', 'mutis', 'gemlite']
 
 # baseline = 'torch-f16'
-supported_runners = [  'cutlass',    'triton', 'mutis', 'gemlite', 'tilelp']
+supported_runners = [  'cutlass',    'triton',   'gemlite', 'tilelp']
 import torch
 arch = torch.cuda.get_device_properties(0).major * 10 + torch.cuda.get_device_properties(0).minor
 print(f"GPU Architecture: {arch}")
 if arch < 90:
     supported_runners.append('bitblas')
 
-
+if arch <= 100:
+    supported_runners.append('mutis')
 M_VALUES = range(128, 2049, 128)
 M_VALUES =  [64] + list(M_VALUES)
 
+
+M_VALUES = [128, 256, 512]
 def get_figure9_configs():
     configs = []
     for m in M_VALUES:
         for k, n in [
-            # (8192, 8192),
+            (8192, 8192),
             # (12288, 8192),
-            (16384, 16384),
+            # (16384, 16384),
             # (28672, 8192),
             # (8192, 16384),
             # (8192, 57344),

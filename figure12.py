@@ -49,11 +49,13 @@ def run_experiments():
             for a_dtype in ['float16']:
                 for b_dtype, backends in [
                     ('float16', ['torch-f16']),
-                    ('uint4b', ['bitblas', 'mutis']),
+                    ('uint4b', ['bitblas', 'mutis', 'tilelp']),
                 ]:
                     for backend in backends:
                         configs.append([model, size, stage, bs, tokens, a_dtype, b_dtype, backend])
     for model, size, stage, bs, tokens, a_dtype, b_dtype, backend in tqdm.tqdm(configs, desc='Running Figure 12 experiments', miniters=1, mininterval=0):
+        
+ 
         assert MatmulLayer.supports(backend, a_dtype, b_dtype)
 
         memory_size = torch.cuda.get_device_properties(None).total_memory * 0.8
@@ -98,7 +100,7 @@ def run_experiments():
 
 def process(df: DataFrame, device: str, backends: List[str], b_dtypes: List[str], models: List[str], stage_bs_tokens: List[Tuple[str, int, int]]) -> DataFrame:
     df = df[df['device'] == device]
-    runners = ['torch-f16', 'triton', 'quant-llm', 'bitblas', 'mutis']
+    runners = ['torch-f16', 'triton', 'quant-llm', 'bitblas', 'mutis', 'tilelp']
     df = df[df['backend'].isin(runners)]
     df = df[df['model'].isin(models)]
     df['stage,bs,tokens'] = df.apply(lambda row: (row['stage'], row['bs'], row['tokens']), axis=1)
@@ -267,6 +269,7 @@ def main():
         'torch-f16',
         'bitblas',
         'mutis',
+        'tilelp',
     ]
     b_dtypes = [
         'float16',

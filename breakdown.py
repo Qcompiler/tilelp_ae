@@ -1,4 +1,5 @@
 import argparse
+from cProfile import label
 import os
 
 import matplotlib.pyplot as plt
@@ -21,6 +22,7 @@ plt.rcParams['font.size'] = 12
 
 baseline = 'cutlass'
 
+
 def read_results_table(txt_path: str) -> DataFrame:
     """
     Read a `DataFrame.to_string(index=False)` table from disk.
@@ -28,10 +30,11 @@ def read_results_table(txt_path: str) -> DataFrame:
     if not os.path.exists(txt_path):
         raise FileNotFoundError(txt_path)
     return pd.read_fwf(txt_path)
- 
+
+
 parser = argparse.ArgumentParser()
-parser.add_argument( "--kk", type=int, default=8192, help="K dimension for the matmul workload.")
-parser.add_argument( "--nn", type=int, default=57344, help="N dimension for the matmul workload.")
+parser.add_argument("--kk", type=int, default=8192, help="K dimension for the matmul workload.")
+parser.add_argument("--nn", type=int, default=57344, help="N dimension for the matmul workload.")
 parser.add_argument(
     "--results-dir",
     type=str,
@@ -44,23 +47,36 @@ parser.add_argument(
     default=None,
     help="If set (or if results-dir/breakdown.txt exists), read results from txt instead of re-benchmarking.",
 )
- 
 
 args = parser.parse_args()
 kk = args.kk
 nn = args.nn
+
+
+def get_workloads():
+    # 两组数据放在同一张图：1) 命令行输入的 kk/nn 2) 指定的 28672/8192
+    workloads = [(kk, nn), (28672, 8192)]
+    # 去重，避免当 kk/nn 本身就是 28672/8192 时重复
+    return list(dict.fromkeys(workloads))
+
+supported_runners = ['cutlass', 'triton',  
+                            'tilelp_acc_in_register', 'tilelp_evict',
+                            'tilelp_no_acc_in_register_no_opt_micro_kernel',
+                              'tilelp']
+import torch
+arch = torch.cuda.get_device_properties(0).major * 10 + torch.cuda.get_device_properties(0).minor
+
+if arch <= 100:
+    supported_runners.append('mutis')
 def get_figure9_configs():
     configs = []
     for m in [
         1
     ]:
-        for k, n in [
-            (kk, nn),
-        ]:
+        for k, n in get_workloads():
             for (b_dtype, runners) in [
                 ('float16', ['torch-f16']),
-                ('uint4b', ['cutlass', 'triton', 'mutis',  'tilelp_acc_in_register',  'tilelp_evict',
-                            'tilelp_no_acc_in_register_no_opt_micro_kernel', 'tilelp']),
+                ('uint4b', supported_runners),
                 # ('uint2b', ['bitblas', 'mutis']),
             ]:
                 for runner in runners:
@@ -78,6 +94,7 @@ def get_figure9_configs():
                         configs.append([runner, a_dtype, b_dtype, group_size, m, k, n])
     return configs
 
+
 def run_experiments():
     configs = get_figure9_configs()
     df = bench_configs(configs, warmup=10, repeat=50)
@@ -85,19 +102,11 @@ def run_experiments():
     return df
 
 
-
 def process(df: DataFrame, gpu: str) -> DataFrame:
     """
-    Filter to the single workload (m=1, k=8192, n=8192) and compute speedup
-    relative to the torch-f16 baseline.
+    For each workload (m, k, n), compute speedup relative to cutlass baseline.
     """
     df = df[df['device'] == gpu].copy()
-
-    # compute speedup relative to torch-f16 baseline
-    baseline_latency = df[df['runner'] == baseline]['latency'].values
-    if len(baseline_latency) == 0:
-        raise ValueError("Baseline 'torch-f16' not found in data.")
-    baseline_latency = float(baseline_latency[0])
 
     # override: make `tilelp_no_acc_in_register_no_opt_micro_kernel` equal to
     # the average latency of `tilelp` and `tilelp_evict` (same config).
@@ -110,7 +119,7 @@ def process(df: DataFrame, gpu: str) -> DataFrame:
         b_df = df[df['runner'] == b_runner][cfg_cols + ['latency']]
         merged = pd.merge(a_df, b_df, on=cfg_cols, suffixes=('_a', '_b'))
         if len(merged) > 0:
-            merged['latency_avg'] = (merged['latency_a'] + merged['latency_b']) / 2 # 这里要测试 micro no tune，需要补充
+            merged['latency_avg'] = (merged['latency_a'] + merged['latency_b']) / 2
 
             for _, row in merged.iterrows():
                 mask = np.ones(len(df), dtype=bool)
@@ -131,99 +140,66 @@ def process(df: DataFrame, gpu: str) -> DataFrame:
                         new_row['latency'] = row['latency_avg']
                         df = pd.concat([df, new_row.to_frame().T], ignore_index=True)
 
-    df['speedup'] = baseline_latency / df['latency']
+    baseline_df = df[df['runner'] == baseline][cfg_cols + ['latency']].rename(columns={'latency': 'baseline_latency'})
+    if len(baseline_df) == 0:
+        raise ValueError("Baseline 'cutlass' not found in data.")
+
+    df = pd.merge(df, baseline_df, on=cfg_cols, how='left')
+    df['speedup'] = df['baseline_latency'] / df['latency']
 
     # exclude the baseline itself from the bar chart
-    runners_to_show = ['triton', 'mutis', 'tilelp_acc_in_register', 'tilelp_evict',
-                        'tilelp_no_acc_in_register_no_opt_micro_kernel',  'tilelp']
+    runners_to_show = ['triton', 'mutis', 'tilelp_acc_in_register', 'tilelp_evict', 'tilelp']
     df = df[df['runner'].isin(runners_to_show)]
     return df
 
 
-def plot_latency(df: DataFrame, baseline_latency: float, out_fname: str):
-    """
-    Bar chart showing latency (ms) for each runner, with a dashed horizontal
-    line for the torch-f16 baseline.
-    """
-    from aesthetic import colors, executor2color, executor2label, ranked_executors
-    from utils import fill_color
-
-    runners_order = [r for r in ranked_executors if r in df['runner'].values]
-    df = df.set_index('runner').loc[runners_order].reset_index()
-
-    fig, ax = plt.subplots(figsize=(10, 4.5))
-
-    bar_width = 0.6
-    x_positions = np.arange(len(runners_order))
-
-    for i, runner in enumerate(runners_order):
-        row = df[df['runner'] == runner].iloc[0]
-        color = fill_color(colors[executor2color[runner]][0])
-        bar = ax.bar(
-            x_positions[i],
-            row['latency'],
-            width=bar_width,
-            color=color,
-            edgecolor='#333333',
-            linewidth=0.8,
-            label=executor2label.get(runner, runner),
-        )
-        ax.bar_label(bar, fmt='%.3f', padding=3, fontsize=9)
-
-    # dashed line for torch-f16 baseline
-    ax.axhline(
-        y=baseline_latency,
-        color='#555555',
-        linewidth=1.2,
-        linestyle='--',
-        label='Cutlass (FP16) baseline',
-    )
-
-    ax.set_xticks(x_positions)
-    ax.set_xticklabels(
-        [executor2label.get(r, r) for r in runners_order],
-        rotation=20,
-        ha='right',
-        fontsize=10,
-    )
-    ax.set_ylabel('Latency (ms)')
-    ax.set_title(f'Ablation Breakdown (m=1, k={kk}, n={nn}, W4A16, group=128)', fontsize=11)
-    ax.set_ylim(0, max(baseline_latency, df['latency'].max()) * 1.25)
-    ax.tick_params(axis='x', which='both', length=0)
-
-    ax.legend(bbox_to_anchor=(1.01, 1), loc='upper left', fontsize=9, frameon=True)
-
-    fig.tight_layout()
-    os.makedirs(os.path.dirname(out_fname), exist_ok=True)
-    fig.savefig(out_fname, bbox_inches='tight')
-    print(f'Saved figure to {out_fname}')
-
-
 def plot_speedup(df: DataFrame, out_fname: str):
     """
-    Bar chart showing speedup (x) for each runner, relative to torch-f16.
+    Grouped bar chart showing speedup (x) for each runner under two workloads.
+    Bars inside a group are close; different workload groups are separated.
     """
     runners_order = [r for r in ranked_executors if r in df['runner'].values]
-    df = df.set_index('runner').loc[runners_order].reset_index()
+    workloads = (
+        df[['k', 'n']]
+        .drop_duplicates()
+        .sort_values(by=['k', 'n'])
+        .itertuples(index=False, name=None)
+    )
+    workloads = list(workloads)
 
-    fig, ax = plt.subplots(figsize=(10, 4.5))
+    fig, ax = plt.subplots(figsize=(6, 4))
 
-    bar_width = 0.6
-    x_positions = np.arange(len(runners_order))
+    # 组内柱子贴近，组间留空隙
+    bar_width = 1
+    intra_step = 1.0
+    group_gap = 1.6
+    group_span = (len(runners_order) - 1) * intra_step
 
-    for i, runner in enumerate(runners_order):
-        row = df[df['runner'] == runner].iloc[0]
-        color = fill_color(colors[executor2color[runner]][0])
-        bar = ax.bar(
-            x_positions[i],
-            row['speedup'],
-            width=bar_width,
-            color=color,
-            edgecolor='#333333',
-            linewidth=0.8,
-            label=executor2label.get(runner, runner),
-        )
-        ax.bar_label(bar, fmt='%.2fx', padding=3, fontsize=9)
+    for g_idx, (k, n) in enumerate(workloads):
+        group_start = g_idx * (group_span + group_gap)
+        df_group = df[(df['k'] == k) & (df['n'] == n)]
+
+        for r_idx, runner in enumerate(runners_order):
+            row = df_group[df_group['runner'] == runner]
+            if len(row) == 0:
+                continue
+            row = row.iloc[0]
+            x = group_start + r_idx * intra_step
+            color = fill_color(colors[executor2color[runner]][0])
+
+            label = executor2label.get(runner, runner) if g_idx == 0 else '_nolegend_'
+            if g_idx == 0 and runner == 'tilelp':
+                label = "TileLP (Tune Pipeline)"
+            bar = ax.bar(
+                x,
+                row['speedup'],
+                width=bar_width,
+                color=color,
+                edgecolor='#333333',
+                linewidth=0.8,
+                label= label,
+            )
+            ax.bar_label(bar, fmt='%.2fx', padding=3, fontsize=8)
 
     ax.axhline(
         y=1.0,
@@ -233,34 +209,43 @@ def plot_speedup(df: DataFrame, out_fname: str):
         label='Cutlass (FP16) baseline (1.0x)',
     )
 
-    ax.set_xticks(x_positions)
-    ax.set_xticklabels(
-        [executor2label.get(r, r) for r in runners_order],
-        rotation=20,
-        ha='right',
-        fontsize=10,
-    )
-    ax.set_ylabel('Speedup (x)')
-    ax.set_title(f'Ablation Breakdown (m=1, k={kk}, n={nn}, W4A16, group=128)', fontsize=11)
-    ax.set_ylim(0, max(1.0, df['speedup'].max()) * 1.25)
-    ax.tick_params(axis='x', which='both', length=0)
-    ax.legend(bbox_to_anchor=(1.01, 1), loc='upper left', fontsize=9, frameon=True)
+    xticks = []
+    xticklabels = []
+    for g_idx, (k, n) in enumerate(workloads):
+        group_start = g_idx * (group_span + group_gap)
+        center = group_start + group_span / 2
+        xticks.append(center)
+        xticklabels.append(f'k={k}, n={n}')
 
-    fig.tight_layout()
+    ax.set_xticks(xticks)
+    ax.set_xticklabels(xticklabels, fontsize=10)
+    ax.set_ylabel('Speedup (x)')
+    ax.set_title('Ablation Breakdown (m=1, W4A16, group=128)', fontsize=11)
+    ax.set_ylim(0, max(1.0, df['speedup'].max()) * 1.25)
+
+    handles, labels = ax.get_legend_handles_labels()
+    fig.legend(
+        handles,
+        labels,
+        loc='lower center',
+        bbox_to_anchor=(0.5, 0),      # 放在最底部
+        ncol=max(1, len(labels)) // 2,
+        fontsize=9,
+        frameon=True,
+    )
+
+    fig.tight_layout(rect=[0, 0.08, 1, 1])
     os.makedirs(os.path.dirname(out_fname), exist_ok=True)
     fig.savefig(out_fname, bbox_inches='tight')
     print(f'Saved figure to {out_fname}')
 
 
 def main():
-    
-
-
     results_dir = args.results_dir
     os.makedirs(results_dir, exist_ok=True)
 
-    txt_path = args.input_txt or os.path.join(results_dir, "figure9.txt")
-   
+    txt_path = args.input_txt or os.path.join(results_dir, "breakdown.txt")
+
     df = run_experiments()
     with open(txt_path, 'w') as f:
         f.write(df.to_string(index=False))
@@ -271,16 +256,13 @@ def main():
     if len(gpus) != 1:
         raise ValueError(f"Expected exactly one GPU, but found: {gpus}")
     gpu = gpus[0]
- 
+
     print(gpu)
- 
-    baseline_latency = df[(df['runner'] == baseline) & (df['device'] == gpu)]['latency'].values[0]
+
     df_plot = process(df, gpu=gpu)
 
-    # plot_latency(df_plot, baseline_latency=baseline_latency,
-    #              out_fname=os.path.join(results_dir, 'breakdown_latency.pdf'))
-    plat = 'h100' if 'h100' in gpu.lower() else '4090'
-    plot_speedup(df_plot, out_fname=os.path.join(results_dir, f'breakdown_speedup_{nn}_{kk}_{plat}.pdf'))
+
+    plot_speedup(df_plot, out_fname=os.path.join(results_dir, f'breakdown_speedup_grouped_{gpu}.pdf'))
 
 
 if __name__ == '__main__':

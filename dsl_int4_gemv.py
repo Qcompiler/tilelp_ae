@@ -38,7 +38,7 @@ def w4a16_micro_kernel(
  
     A_ptr = A_ptr + row_id * stride_am + (offs_k)
     x_ptr = x_ptr + (offs_k * 2 )
-    for _ in tl.range(0, tl.cdiv(col, BLOCK_SIZE), warp_specialize=True):
+    for _ in range(0, tl.cdiv(col, BLOCK_SIZE)):
 
 
         
@@ -67,7 +67,7 @@ def w4a16(A: torch.Tensor, vector: torch.Tensor, output, scales):
  
     activation = tl.convert(vector, dtype = tl.float16x8)
     A = tl.convert(A, dtype = tl.int4)
-    kernel = w4a16_micro_kernel[(row, 1)](A, activation, output, scales, row, column,  
+    kernel = w4a16_micro_kernel[(row, )](A, activation, output, scales, row, column,  
                             stride_ak)
     return kernel
 

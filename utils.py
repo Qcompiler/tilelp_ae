@@ -26,10 +26,13 @@ def configure_kernel_cache_dir():
     cache_dir.mkdir(parents=True, exist_ok=True)
 
     # configure bitblas cache directory
-    import bitblas.cache
-    bitblas.cache.set_database_path(str(cache_dir / 'bitblas'))
-    bitblas.module.BITBLAS_DATABASE_PATH = str(cache_dir / 'bitblas')
-
+    try:
+        import bitblas.cache
+        bitblas.cache.set_database_path(str(cache_dir / 'bitblas'))
+        bitblas.module.BITBLAS_DATABASE_PATH = str(cache_dir / 'bitblas')
+    except:
+        print("not bitblas!!!!!!!!!!!!!!!!!!!!!!")
+        pass
     # configure triton cache directory
     os.environ['TRITON_CACHE_DIR'] = str(cache_dir / 'triton')
 

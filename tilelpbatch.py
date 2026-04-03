@@ -232,20 +232,22 @@ def get_max_autotune_config_nvidia():
 #Faster autotuner 
 def get_fast_autotune_config_nvidia():
     configs = []
-    for split_k in [1, 2, 4, 8, 16]:
-        for stages in [1, 2, 3, 4]:
-            configs.append(triton.Config({'BLOCK_SIZE_M': 128, 'BLOCK_SIZE_N': 128, 
-                                        'BLOCK_SIZE_K': 32, 'SPLIT_K':split_k, 'GROUP_SIZE_M':8,
-                                            'A_load_order':2}, num_stages=stages,
-                        num_warps=4)) 
-            configs.append(triton.Config({'BLOCK_SIZE_M': 256, 'BLOCK_SIZE_N': 128, 
-                                        'BLOCK_SIZE_K': 32, 'SPLIT_K':split_k, 'GROUP_SIZE_M':8,
-                                            'A_load_order':2}, num_stages=stages,
-                        num_warps=4)) 
-            configs.append(triton.Config({'BLOCK_SIZE_M': 64, 'BLOCK_SIZE_N': 128, 
-                                        'BLOCK_SIZE_K': 32, 'SPLIT_K':split_k, 'GROUP_SIZE_M':8,
-                                            'A_load_order':2}, num_stages=stages,
-                        num_warps=4)) 
+    for kk in [32, 16]:
+        for split_k in [1, 2, 4, 8, 16]:
+            for stages in [1, 2, 3, 4]:
+                configs.append(triton.Config({'BLOCK_SIZE_M': 128, 'BLOCK_SIZE_N': 128, 
+                                            'BLOCK_SIZE_K': kk, 'SPLIT_K':split_k, 'GROUP_SIZE_M':8,
+                                                'A_load_order':2}, num_stages=stages,
+                            num_warps=4)) 
+                configs.append(triton.Config({'BLOCK_SIZE_M': 256, 'BLOCK_SIZE_N': 128, 
+                                            'BLOCK_SIZE_K': kk, 'SPLIT_K':split_k, 'GROUP_SIZE_M':8,
+                                                'A_load_order':2}, num_stages=stages,
+                            num_warps=4)) 
+                configs.append(triton.Config({'BLOCK_SIZE_M': 64, 'BLOCK_SIZE_N': 128, 
+                                            'BLOCK_SIZE_K': kk, 'SPLIT_K':split_k, 'GROUP_SIZE_M':8,
+                                                'A_load_order':2}, num_stages=stages,
+                            num_warps=4)) 
+
     # configs.append(triton.Config({'BLOCK_SIZE_M':16, 'BLOCK_SIZE_N':32,  'BLOCK_SIZE_K':64,  'SPLIT_K':4, 'GROUP_SIZE_M':8, 'A_load_order':0}, num_warps=4, num_stages=4))
     # configs.append(triton.Config({'BLOCK_SIZE_M':16, 'BLOCK_SIZE_N':32,  'BLOCK_SIZE_K':128, 'SPLIT_K':4, 'GROUP_SIZE_M':8, 'A_load_order':2}, num_warps=4, num_stages=4))
     # configs.append(triton.Config({'BLOCK_SIZE_M':16, 'BLOCK_SIZE_N':32,  'BLOCK_SIZE_K':256, 'SPLIT_K':1, 'GROUP_SIZE_M':8, 'A_load_order':0}, num_warps=4, num_stages=5))
@@ -566,13 +568,6 @@ def gemm_splitK_forward(x: Tensor, W_q: Tensor, scales: Tensor,
     stride_meta_a_m, stride_meta_a_g = None, None
 
  
-    # print("elements_per_sample:", elements_per_sample)
-    # print("W_group_mode:", W_group_mode)
-    # print(is_mx_dtype(input_dtype))
-    
-    # print("channel_scale_mode:", channel_scale_mode)
-    # print("zeros is scalar:", zeros.numel() == 1)
-    # exit()
     zeros = None
 
     kernel = gemm_splitK_INT_kernel[grid](
@@ -602,3 +597,4 @@ def gemm_splitK_forward(x: Tensor, W_q: Tensor, scales: Tensor,
     #     f.write(kernel.asm["ptx"])
     # exit()
     return output, gemm_splitK_INT_kernel.best_config
+

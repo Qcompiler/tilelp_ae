@@ -39,11 +39,10 @@ executor2label = {
     'mutis': 'Tilus',
     
     'cutlass': 'CUTLASS (FP16)',
-    'tilelp_acc_in_register': 'TileLP (acc in reg)',
-    'tilelp_evict': 'TileLP (with evict policy)',
-    
-    'tilelp_no_acc_in_register_no_opt_micro_kernel': 'TileLP (Micro Kernel)',
-    'tilelp': 'TileLP (Tune Micro Kernel)',
+    'tilelp_acc_in_register': 'TileLP (Micro Kernel)',
+    'tilelp_evict': 'TileLP (Tune L1 Cache)',
+    'tilelp_no_acc_in_register_no_opt_micro_kernel': 'TileLP (Tune xx)',
+    'tilelp': 'TileLP',
     'gemlite': 'GemLite',
 }
 

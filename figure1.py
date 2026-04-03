@@ -19,13 +19,19 @@ plt.rcParams['font.size'] = 12
 
 baseline = 'cutlass'
 
-supported_runners = ['cutlass', 'marlin', 'tilelp', 'triton', 'mutis', ]
+supported_runners = ['cutlass', 'marlin', 'tilelp', 'triton',  ]
+
+
 
 import torch
 arch = torch.cuda.get_device_properties(0).major * 10 + torch.cuda.get_device_properties(0).minor
 print(f"GPU Architecture: {arch}")
 if arch < 90:
     supported_runners.append('bitblas')
+
+if arch <= 100:
+    supported_runners.append('mutis')
+
 def get_figure9_configs():
     configs = []
     for m in [1, ]:
@@ -64,7 +70,7 @@ def run_experiments():
 
 
 def load_df(results_dir: str) -> DataFrame:
-    txt_path = os.path.join(results_dir, 'figure9.txt')
+    txt_path = os.path.join(results_dir, 'figure1.txt')
     df = pd.read_csv(txt_path, sep=r'\s+', engine='python')
     return df
 

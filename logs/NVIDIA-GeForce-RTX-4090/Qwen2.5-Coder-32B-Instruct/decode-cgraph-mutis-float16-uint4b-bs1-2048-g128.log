@@ -1,0 +1,135 @@
+[Mutis] Building _cast_kernel(f32, u4):   0%|                                                                    | 0/8 [00:00<?, ?it/s][Mutis] Building _cast_kernel(f32, u4):  12%|███████▌                                                    | 1/8 [00:03<00:25,  3.68s/it][Mutis] Building _cast_kernel(f32, u4): 100%|████████████████████████████████████████████████████████████| 8/8 [00:03<00:00,  2.06it/s]
+[Mutis] Tuning _cast_kernel(f32, u4):   0%|                                                                      | 0/8 [00:00<?, ?it/s][Mutis] Tuning _cast_kernel(f32, u4):  25%|███████████████▌                                              | 2/8 [00:00<00:00, 18.30it/s][Mutis] Tuning _cast_kernel(f32, u4):  62%|██████████████████████████████████████▊                       | 5/8 [00:00<00:00, 23.19it/s][Mutis] Tuning _cast_kernel(f32, u4): 100%|██████████████████████████████████████████████████████████████| 8/8 [00:00<00:00, 25.51it/s][Mutis] Tuning _cast_kernel(f32, u4): 100%|██████████████████████████████████████████████████████████████| 8/8 [00:00<00:00, 24.37it/s]
+[Mutis] Building _cast_kernel(f32, f16):   0%|                                                                   | 0/8 [00:00<?, ?it/s][Mutis] Building _cast_kernel(f32, f16):  12%|███████▍                                                   | 1/8 [00:03<00:26,  3.77s/it][Mutis] Building _cast_kernel(f32, f16):  25%|██████████████▊                                            | 2/8 [00:03<00:10,  1.67s/it][Mutis] Building _cast_kernel(f32, f16): 100%|███████████████████████████████████████████████████████████| 8/8 [00:04<00:00,  1.95it/s]
+[Mutis] Tuning _cast_kernel(f32, f16):   0%|                                                                     | 0/8 [00:00<?, ?it/s][Mutis] Tuning _cast_kernel(f32, f16):  75%|█████████████████████████████████████████████▊               | 6/8 [00:00<00:00, 52.54it/s][Mutis] Tuning _cast_kernel(f32, f16): 100%|█████████████████████████████████████████████████████████████| 8/8 [00:00<00:00, 53.77it/s]
+Capturing CUDA graph shapes:   0%|                                                                              | 0/35 [00:00<?, ?it/s]Capturing CUDA graph shapes:   3%|██                                                                    | 1/35 [00:00<00:13,  2.61it/s]Capturing CUDA graph shapes:   6%|████                                                                  | 2/35 [00:00<00:10,  3.27it/s]Capturing CUDA graph shapes:   9%|██████                                                                | 3/35 [00:00<00:08,  3.56it/s]Capturing CUDA graph shapes:  11%|████████                                                              | 4/35 [00:01<00:08,  3.66it/s]Capturing CUDA graph shapes:  14%|██████████                                                            | 5/35 [00:01<00:08,  3.73it/s]Capturing CUDA graph shapes:  17%|████████████                                                          | 6/35 [00:01<00:07,  3.72it/s]Capturing CUDA graph shapes:  20%|██████████████                                                        | 7/35 [00:01<00:07,  3.70it/s]Capturing CUDA graph shapes:  23%|████████████████                                                      | 8/35 [00:02<00:07,  3.70it/s]Capturing CUDA graph shapes:  26%|██████████████████                                                    | 9/35 [00:02<00:07,  3.67it/s]Capturing CUDA graph shapes:  29%|███████████████████▋                                                 | 10/35 [00:02<00:06,  3.62it/s]Capturing CUDA graph shapes:  31%|█████████████████████▋                                               | 11/35 [00:03<00:06,  3.59it/s]Capturing CUDA graph shapes:  34%|███████████████████████▋                                             | 12/35 [00:03<00:06,  3.58it/s]Capturing CUDA graph shapes:  37%|█████████████████████████▋                                           | 13/35 [00:03<00:06,  3.62it/s]Capturing CUDA graph shapes:  40%|███████████████████████████▌                                         | 14/35 [00:03<00:05,  3.62it/s]Capturing CUDA graph shapes:  43%|█████████████████████████████▌                                       | 15/35 [00:04<00:05,  3.60it/s]Capturing CUDA graph shapes:  46%|███████████████████████████████▌                                     | 16/35 [00:04<00:05,  3.57it/s]Capturing CUDA graph shapes:  49%|█████████████████████████████████▌                                   | 17/35 [00:04<00:05,  3.54it/s]Capturing CUDA graph shapes:  51%|███████████████████████████████████▍                                 | 18/35 [00:05<00:04,  3.51it/s]Capturing CUDA graph shapes:  54%|█████████████████████████████████████▍                               | 19/35 [00:05<00:04,  3.49it/s]Capturing CUDA graph shapes:  57%|███████████████████████████████████████▍                             | 20/35 [00:05<00:04,  3.49it/s]Capturing CUDA graph shapes:  60%|█████████████████████████████████████████▍                           | 21/35 [00:05<00:03,  3.52it/s]Capturing CUDA graph shapes:  63%|███████████████████████████████████████████▎                         | 22/35 [00:06<00:03,  3.55it/s]Capturing CUDA graph shapes:  66%|█████████████████████████████████████████████▎                       | 23/35 [00:06<00:03,  3.57it/s]Capturing CUDA graph shapes:  69%|███████████████████████████████████████████████▎                     | 24/35 [00:06<00:03,  3.57it/s]Capturing CUDA graph shapes:  71%|█████████████████████████████████████████████████▎                   | 25/35 [00:07<00:02,  3.58it/s]Capturing CUDA graph shapes:  74%|███████████████████████████████████████████████████▎                 | 26/35 [00:07<00:02,  3.56it/s]Capturing CUDA graph shapes:  77%|█████████████████████████████████████████████████████▏               | 27/35 [00:07<00:02,  3.58it/s]Capturing CUDA graph shapes:  80%|███████████████████████████████████████████████████████▏             | 28/35 [00:07<00:01,  3.59it/s]Capturing CUDA graph shapes:  83%|█████████████████████████████████████████████████████████▏           | 29/35 [00:08<00:01,  3.59it/s]Capturing CUDA graph shapes:  86%|███████████████████████████████████████████████████████████▏         | 30/35 [00:08<00:01,  3.55it/s]Capturing CUDA graph shapes:  89%|█████████████████████████████████████████████████████████████        | 31/35 [00:08<00:01,  3.52it/s]Capturing CUDA graph shapes:  91%|███████████████████████████████████████████████████████████████      | 32/35 [00:08<00:00,  3.54it/s]Capturing CUDA graph shapes:  94%|█████████████████████████████████████████████████████████████████    | 33/35 [00:09<00:00,  3.52it/s]Capturing CUDA graph shapes:  97%|███████████████████████████████████████████████████████████████████  | 34/35 [00:09<00:00,  3.47it/s]
+[Mutis] Building matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):   0%|                   | 0/120 [00:00<?, ?it/s][A
+[Mutis] Building matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):   1%|           | 1/120 [00:09<19:07,  9.65s/it][A
+[Mutis] Building matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):   2%|▏          | 2/120 [00:09<08:07,  4.13s/it][A
+[Mutis] Building matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):   2%|▎          | 3/120 [00:10<04:57,  2.54s/it][A
+[Mutis] Building matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):   4%|▍          | 5/120 [00:10<02:13,  1.16s/it][A
+[Mutis] Building matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):   6%|▋          | 7/120 [00:11<01:25,  1.33it/s][A
+[Mutis] Building matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):  66%|██████▌   | 79/120 [00:11<00:01, 30.28it/s][A
+[Mutis] Building matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):  83%|███████▌ | 100/120 [00:11<00:00, 39.85it/s][A[Mutis] Building matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32): 100%|█████████| 120/120 [00:11<00:00, 10.07it/s]
+
+[Mutis] Tuning matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):   0%|                     | 0/120 [00:00<?, ?it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):   7%|▊            | 8/120 [00:00<00:01, 75.77it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):  14%|█▋          | 17/120 [00:00<00:01, 83.15it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):  22%|██▌         | 26/120 [00:00<00:01, 85.96it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):  29%|███▌        | 35/120 [00:00<00:00, 87.27it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):  37%|████▍       | 44/120 [00:00<00:00, 87.97it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):  44%|█████▎      | 53/120 [00:00<00:00, 87.94it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):  52%|██████▏     | 62/120 [00:00<00:00, 86.93it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):  59%|███████     | 71/120 [00:00<00:00, 86.86it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):  67%|████████    | 80/120 [00:00<00:00, 86.81it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):  74%|████████▉   | 89/120 [00:01<00:00, 86.52it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):  82%|█████████▊  | 98/120 [00:01<00:00, 86.21it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):  89%|█████████▊ | 107/120 [00:01<00:00, 86.45it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32):  97%|██████████▋| 116/120 [00:01<00:00, 86.54it/s][A[Mutis] Tuning matmul_mma_kernel_static(1, 7168, 5120, 128, f16, u4, f16, f16, f32): 100%|███████████| 120/120 [00:01<00:00, 86.38it/s]
+
+[Mutis] Building matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):   0%|                   | 0/120 [00:00<?, ?it/s][A
+[Mutis] Building matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):   1%|           | 1/120 [00:10<21:18, 10.74s/it][A
+[Mutis] Building matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):   2%|▏          | 2/120 [00:11<09:41,  4.93s/it][A
+[Mutis] Building matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):   5%|▌          | 6/120 [00:11<02:14,  1.18s/it][A
+[Mutis] Building matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):   8%|▊         | 10/120 [00:12<01:04,  1.71it/s][A
+[Mutis] Building matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  66%|██████▌   | 79/120 [00:12<00:01, 22.14it/s][A
+[Mutis] Building matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  77%|███████▋  | 92/120 [00:12<00:01, 25.52it/s][A
+[Mutis] Building matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  86%|███████▋ | 103/120 [00:12<00:00, 29.07it/s][A[Mutis] Building matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32): 100%|█████████| 120/120 [00:12<00:00,  9.24it/s]
+
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):   0%|                     | 0/120 [00:00<?, ?it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):   4%|▌            | 5/120 [00:00<00:02, 46.78it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):   9%|█           | 11/120 [00:00<00:02, 51.98it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  14%|█▋          | 17/120 [00:00<00:01, 53.85it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  19%|██▎         | 23/120 [00:00<00:01, 54.51it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  24%|██▉         | 29/120 [00:00<00:01, 54.90it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  29%|███▌        | 35/120 [00:00<00:01, 55.30it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  34%|████        | 41/120 [00:00<00:01, 55.58it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  39%|████▋       | 47/120 [00:00<00:01, 55.72it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  44%|█████▎      | 53/120 [00:00<00:01, 55.51it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  49%|█████▉      | 59/120 [00:01<00:01, 55.69it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  54%|██████▌     | 65/120 [00:01<00:00, 55.81it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  59%|███████     | 71/120 [00:01<00:00, 55.89it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  64%|███████▋    | 77/120 [00:01<00:00, 55.97it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  69%|████████▎   | 83/120 [00:01<00:00, 56.00it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  74%|████████▉   | 89/120 [00:01<00:00, 56.05it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  79%|█████████▌  | 95/120 [00:01<00:00, 56.03it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  84%|█████████▎ | 101/120 [00:01<00:00, 55.59it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  89%|█████████▊ | 107/120 [00:01<00:00, 55.57it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  94%|██████████▎| 113/120 [00:02<00:00, 55.70it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32):  99%|██████████▉| 119/120 [00:02<00:00, 55.67it/s][A[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 5120, 128, f16, u4, f16, f16, f32): 100%|███████████| 120/120 [00:02<00:00, 55.34it/s]
+
+[Mutis] Building matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):   0%|                  | 0/120 [00:00<?, ?it/s][A
+[Mutis] Building matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):   1%|          | 1/120 [00:09<19:00,  9.58s/it][A
+[Mutis] Building matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):   3%|▎         | 4/120 [00:10<03:47,  1.96s/it][A
+[Mutis] Building matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):   6%|▌         | 7/120 [00:10<01:52,  1.01it/s][A
+[Mutis] Building matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):   9%|▊        | 11/120 [00:10<00:55,  1.98it/s][A
+[Mutis] Building matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  19%|█▋       | 23/120 [00:10<00:16,  6.00it/s][A
+[Mutis] Building matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  73%|██████▌  | 88/120 [00:11<00:00, 33.74it/s][A[Mutis] Building matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32): 100%|████████| 120/120 [00:11<00:00, 10.64it/s]
+
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):   0%|                    | 0/120 [00:00<?, ?it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):   3%|▍           | 4/120 [00:00<00:03, 33.49it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):   7%|▊           | 8/120 [00:00<00:03, 36.00it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  10%|█          | 12/120 [00:00<00:02, 37.02it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  13%|█▍         | 16/120 [00:00<00:02, 37.38it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  17%|█▊         | 20/120 [00:00<00:02, 37.73it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  20%|██▏        | 24/120 [00:00<00:02, 37.79it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  23%|██▌        | 28/120 [00:00<00:02, 37.87it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  27%|██▉        | 32/120 [00:00<00:02, 37.83it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  30%|███▎       | 36/120 [00:00<00:02, 37.93it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  33%|███▋       | 40/120 [00:01<00:02, 37.83it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  37%|████       | 44/120 [00:01<00:02, 37.98it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  40%|████▍      | 48/120 [00:01<00:01, 37.67it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  43%|████▊      | 52/120 [00:01<00:01, 37.82it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  47%|█████▏     | 56/120 [00:01<00:01, 37.89it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  50%|█████▌     | 60/120 [00:01<00:01, 37.99it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  53%|█████▊     | 64/120 [00:01<00:01, 38.00it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  57%|██████▏    | 68/120 [00:01<00:01, 38.08it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  60%|██████▌    | 72/120 [00:01<00:01, 38.05it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  63%|██████▉    | 76/120 [00:02<00:01, 37.90it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  67%|███████▎   | 80/120 [00:02<00:01, 37.80it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  70%|███████▋   | 84/120 [00:02<00:00, 37.86it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  73%|████████   | 88/120 [00:02<00:00, 37.83it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  77%|████████▍  | 92/120 [00:02<00:00, 37.81it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  80%|████████▊  | 96/120 [00:02<00:00, 37.64it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  83%|████████▎ | 100/120 [00:02<00:00, 37.72it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  87%|████████▋ | 104/120 [00:02<00:00, 37.83it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  90%|█████████ | 108/120 [00:02<00:00, 37.94it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  93%|█████████▎| 112/120 [00:02<00:00, 37.98it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32):  97%|█████████▋| 116/120 [00:03<00:00, 37.60it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32): 100%|██████████| 120/120 [00:03<00:00, 37.73it/s][A[Mutis] Tuning matmul_mma_kernel_static(1, 55296, 5120, 128, f16, u4, f16, f16, f32): 100%|██████████| 120/120 [00:03<00:00, 37.72it/s]
+
+[Mutis] Building matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):   0%|                  | 0/120 [00:00<?, ?it/s][A
+[Mutis] Building matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):   1%|          | 1/120 [00:10<20:07, 10.14s/it][A
+[Mutis] Building matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):   3%|▎         | 4/120 [00:10<03:50,  1.99s/it][A
+[Mutis] Building matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):   8%|▊        | 10/120 [00:10<01:08,  1.61it/s][A
+[Mutis] Building matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  11%|▉        | 13/120 [00:11<00:57,  1.85it/s][A
+[Mutis] Building matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  16%|█▍       | 19/120 [00:11<00:29,  3.48it/s][A
+[Mutis] Building matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  18%|█▋       | 22/120 [00:12<00:22,  4.41it/s][A
+[Mutis] Building matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  38%|███▍     | 46/120 [00:12<00:04, 15.77it/s][A[Mutis] Building matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32): 100%|████████| 120/120 [00:12<00:00,  9.51it/s]
+
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):   0%|                    | 0/120 [00:00<?, ?it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):   3%|▍           | 4/120 [00:00<00:03, 37.69it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):   8%|▉           | 9/120 [00:00<00:02, 42.06it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  12%|█▎         | 14/120 [00:00<00:02, 43.42it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  16%|█▋         | 19/120 [00:00<00:02, 44.20it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  20%|██▏        | 24/120 [00:00<00:02, 44.63it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  24%|██▋        | 29/120 [00:00<00:02, 44.74it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  28%|███        | 34/120 [00:00<00:01, 44.98it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  32%|███▌       | 39/120 [00:00<00:01, 45.11it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  37%|████       | 44/120 [00:00<00:01, 45.07it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  41%|████▍      | 49/120 [00:01<00:01, 44.51it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  45%|████▉      | 54/120 [00:01<00:01, 44.67it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  49%|█████▍     | 59/120 [00:01<00:01, 44.77it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  53%|█████▊     | 64/120 [00:01<00:01, 44.82it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  57%|██████▎    | 69/120 [00:01<00:01, 45.00it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  62%|██████▊    | 74/120 [00:01<00:01, 44.84it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  66%|███████▏   | 79/120 [00:01<00:00, 45.04it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  70%|███████▋   | 84/120 [00:01<00:00, 45.16it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  74%|████████▏  | 89/120 [00:01<00:00, 45.24it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  78%|████████▌  | 94/120 [00:02<00:00, 45.16it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  82%|█████████  | 99/120 [00:02<00:00, 43.78it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  87%|████████▋ | 104/120 [00:02<00:00, 44.19it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  91%|█████████ | 109/120 [00:02<00:00, 44.19it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  95%|█████████▌| 114/120 [00:02<00:00, 44.20it/s][A
+[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32):  99%|█████████▉| 119/120 [00:02<00:00, 44.53it/s][A[Mutis] Tuning matmul_mma_kernel_static(1, 5120, 27648, 128, f16, u4, f16, f16, f32): 100%|██████████| 120/120 [00:02<00:00, 44.52it/s]
+Capturing CUDA graph shapes: 100%|█████████████████████████████████████████████████████████████████████| 35/35 [01:21<00:00, 21.84s/it]Capturing CUDA graph shapes: 100%|█████████████████████████████████████████████████████████████████████| 35/35 [01:21<00:00,  2.33s/it]

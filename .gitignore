@@ -9,3 +9,5 @@ marlin/
 triton_build_dir/
 vllm_install/
 tmp/
+*.whl
+core

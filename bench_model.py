@@ -53,7 +53,7 @@ parser.add_argument(
     '--backend',
     type=str,
     required=True,
-    choices=['torch-f16', 'mutis', 'triton', 'bitblas', 'quant-llm']
+    choices=['torch-f16', 'mutis', 'triton', 'bitblas', 'quant-llm', 'tilelp'],
 )
 parser.add_argument('--num_warmup', type=int)
 parser.add_argument('--num_repeat', type=int)

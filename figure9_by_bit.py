@@ -19,11 +19,11 @@ plt.rcParams['font.size'] = 12
 
 baseline = 'cutlass'
 
-supported_runners = ['cutlass', 'marlin', 'tilelp', 'triton', 'mutis']
+supported_runners = ['cutlass', 'marlin', 'tilelp', 'triton', ]
 
-supported_runners_2bit = [  'tilelp',   'mutis']
+supported_runners_2bit = [  'tilelp',   ]
 
-supported_runners_8bit = ['cutlass', 'triton',   'mutis', 'tilelp']
+supported_runners_8bit = ['cutlass', 'triton',   'tilelp']
 import torch
 arch = torch.cuda.get_device_properties(0).major * 10 + torch.cuda.get_device_properties(0).minor
 print(f"GPU Architecture: {arch}")
@@ -32,6 +32,10 @@ if arch < 90:
     supported_runners_2bit.append('bitblas')
     supported_runners_8bit.append('bitblas')
 
+if arch <= 100:
+    supported_runners.append('mutis')
+    supported_runners_2bit.append('mutis')
+    supported_runners_8bit.append('mutis')
 import argparse
 parser = argparse.ArgumentParser(description='Process some integers.')
 parser.add_argument('--kk', type=int, default=8192, help='K value')

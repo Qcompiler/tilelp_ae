@@ -1021,12 +1021,13 @@ def w4a16_micro(A: torch.Tensor, vector: torch.Tensor, output, scales):
 
 
 from tilelpbatch import gemm_splitK_forward
+from tilelpbreakdown import gemm_splitK_forward_no_auto_tune, gemm_splitK_forward_no_auto_tune_no_evict
 class TilelpLayer(MatmulLayer):
     """W4A16 / W8A16 GEMV via tilelp DSL kernels."""
 
     def __init__(self, a_dtype: DataType, b_dtype: DataType, group_size: int, m: int, k: int, n: int):
         super().__init__(a_dtype, b_dtype, group_size, m, k, n)
-        weight = torch.randn(n, k, dtype=torch.float16, device='cuda')
+        weight = torch.randn(n, k, dtype=torch.float16, device='cpu') / 10
 
         if b_dtype == uint8:
             # INT8 path: quantise to uint8, pack 4 bytes into int32 for the kernel
@@ -1051,6 +1052,7 @@ class TilelpLayer(MatmulLayer):
         else:
             # INT4 path (original)
             from tilelp.common.common import gen_quant4_my
+            
             self.q_weight, self.scales = gen_quant4_my(n, k, torch.clone(weight),
                                                        groupsize=-1, tile=1)
 
@@ -1069,6 +1071,14 @@ class TilelpLayer(MatmulLayer):
                 W_nbits=4, group_size=group_size,
                 in_features=k, out_features=n,
             )
+
+            if self.m == 1:
+                self.q_weight = self.q_weight.cuda()
+                self.scales = self.scales.cuda()
+            else:
+
+                self.W_q = self.W_q.cuda()
+                self.W_scales = self.W_scales.cuda()
     @staticmethod
     def supported_pairs():
         return [(float16, int4b), (float16, uint4b), (float16, uint8), (float16, uint2b)]
@@ -1105,6 +1115,8 @@ class TilelpLayer(MatmulLayer):
                 out = torch.empty(self.m, self.n, dtype=torch.float16, device=a.device)
                 w4a16(self.q_weight, a, out, self.scales)
             else:
+
+
                 out, _ = gemm_splitK_forward(a, self.W_q, 
                                  self.W_scales, self.group_size, elements_per_sample=8) 
 
@@ -1118,7 +1130,26 @@ class TilelpEvictLayer(MatmulLayer):
         super().__init__(a_dtype, b_dtype, group_size, m, k, n)
         self.q_weight = torch.randint(0, 16, (n, k // 8), dtype=torch.int32, device='cuda')
         self.scales = torch.randn(n, dtype=torch.float16, device='cuda')
+        from tilelp.common.common import gen_quant4_my
+        weight = torch.randn(n, k, dtype=torch.float16, device='cuda')
+        self.q_weight, self.scales = gen_quant4_my(n, k, torch.clone(weight),
+                                                    groupsize=-1, tile=1)
 
+        from tilelp.common.common import pack_gemlite
+        from tilelp.common.common import generate_randint, gen_quant4, gen_quant4_my, gen_quant4_uint8
+        from tilelp.common.common import pack_gemlite
+        BLOCK_SIZE_K = 128
+        q_weight, scales  = gen_quant4_uint8(n, k, torch.clone(weight),
+                                        block_size = BLOCK_SIZE_K,
+                                        groupsize = 128, tile = 1)
+
+
+
+        self.W_q, self.W_scales, _ = pack_gemlite(
+            q_weight, scales, None  ,
+            W_nbits=4, group_size=group_size,
+            in_features=k, out_features=n,
+        )
     @staticmethod
     def supported_pairs():
         return [(float16, uint4b)]
@@ -1128,8 +1159,11 @@ class TilelpEvictLayer(MatmulLayer):
         if a.size(0) != self.m:
             return torch.empty(a.size(0), self.n, dtype=a.dtype, device=a.device)
         out = torch.empty(self.m, self.n, dtype=torch.float16, device=a.device)
-        for i in range(self.m):
-            w4a16_tilelp_evict(self.q_weight, a[i : i + 1], out[i], self.scales)
+        if self.m == 1:
+            w4a16_tilelp_evict(self.q_weight, a, out, self.scales)
+        else:
+            out, _ = gemm_splitK_forward_no_auto_tune_no_evict(a, self.W_q, 
+                                 self.W_scales, self.group_size, elements_per_sample=8) 
         return out
 
 
@@ -1160,8 +1194,27 @@ class TilelpNoAccInRegisterNoOptMicroKernelLayer(MatmulLayer):
 
     def __init__(self, a_dtype: DataType, b_dtype: DataType, group_size: int, m: int, k: int, n: int):
         super().__init__(a_dtype, b_dtype, group_size, m, k, n)
-        self.q_weight = torch.randint(0, 16, (n, k // 8), dtype=torch.int32, device='cuda')
+        from tilelp.common.common import gen_quant4_my
 
+        weight = torch.randn(n, k, dtype=torch.float16, device='cuda')
+        self.q_weight, self.scales = gen_quant4_my(n, k, torch.clone(weight),
+                                                    groupsize=-1, tile=1)
+
+        from tilelp.common.common import pack_gemlite
+        from tilelp.common.common import generate_randint, gen_quant4, gen_quant4_my, gen_quant4_uint8
+        from tilelp.common.common import pack_gemlite
+        BLOCK_SIZE_K = 128
+        q_weight, scales  = gen_quant4_uint8(n, k, torch.clone(weight),
+                                        block_size = BLOCK_SIZE_K,
+                                        groupsize = 128, tile = 1)
+
+
+
+        self.W_q, self.W_scales, _ = pack_gemlite(
+            q_weight, scales, None  ,
+            W_nbits=4, group_size=group_size,
+            in_features=k, out_features=n,
+        )
     @staticmethod
     def supported_pairs():
         return [(float16, uint4b)]
@@ -1171,8 +1224,13 @@ class TilelpNoAccInRegisterNoOptMicroKernelLayer(MatmulLayer):
         if a.size(0) != self.m:
             return torch.empty(a.size(0), self.n, dtype=a.dtype, device=a.device)
         out = torch.empty(self.m, self.n, dtype=torch.float16, device=a.device)
-        for i in range(self.m):
-            pass
+        
+        if self.m == 1:
+            return out
+         
+        out, _ = gemm_splitK_forward_no_auto_tune(a, self.W_q, 
+                                 self.W_scales, self.group_size, elements_per_sample=8) 
+
         return out
 
 

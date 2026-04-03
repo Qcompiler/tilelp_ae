@@ -29,34 +29,45 @@
 #           -e "HF_TOKEN=$HF_TOKEN" \
 #           -d --name tilus-artifacts tilus-artifacts:latest
 #     else
-        srun -N 1  --pty --gres=gpu:4090:1 docker run --gpus all \
-          -v /home/dataset/tmp/:/home/chenyidong \
+#         srun -N 1  --pty --gres=gpu:4090:1 docker run --gpus all \
+#           -v /home/dataset/tmp/:/home/chenyidong \
+#           -v ./cache:/app/cache \
+#           -v ./results:/app/results \
+#           -d --name tilus-artifact docker.1ms.run/yyding/tilus-artifacts:latest
+
+
+        srun -N 1  --pty --gres=gpu:5090:1 docker run --gpus all \
+          -v /home/dataset/tmp/:/home/chenyidong         -v /home/spack/spack/opt/spack/linux-debian12-sapphirerapids/gcc-12.2.0/cuda-12.8.0-ogkmenn2commmbqjel5iws2ieekvevsj:/cuda/ \
           -v ./cache:/app/cache \
           -v ./results:/app/results \
           -d --name tilus-artifact docker.1ms.run/yyding/tilus-artifacts:latest
 
+# srun -N 1 --pty --gres=gpu:4090:1 -p Long  docker exec -it 557f3b7c94a3 bash 
 
+srun -N 1 --pty --gres=gpu:5090:1 -p Long  docker ps  
+
+srun -N 1 --pty --gres=gpu:5090:1 -p Long  docker exec -it 6b96e50b0854 bash 
 export GPUID=0
 
 
 
-pip install hqq
-pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
-pip uninstall vllm
+
+# pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+# pip uninstall vllm
 
 pip uninstall marlin
 cd marlin
 rm -rf build
-export TORCH_CUDA_ARCH_LIST='9.0;8.0;8.9;8.6'
+export TORCH_CUDA_ARCH_LIST='9.0;8.0;8.9;8.6;12.0a'
 python setup.py install
-
-
 cd ..
 
-pip install triton-3.6.0+gitfebf1172-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
-
-export PYTHONPATH=/home/chenyidong/tilus-artifacts/artifacts/tilelp
-
+pip install hqq
+pip install triton-3.7.0+git9c288bc5-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
 cp target_detector.py /opt/conda/envs/titus-artifacts/lib/python3.10/site-packages/bitblas/utils/target_detector.py
+cp  vllm_install/__init__.py /opt/conda/envs/titus-artifacts/lib/python3.10/site-packages/vllm/model_executor/layers/fused_moe/__init__.py 
+# export PYTHONPATH=/home/chenyidong/tilus-artifacts/artifacts/tilelp
 
-git config --global --add safe.directory /home/chenyidong/tilus-artifacts/artifacts/triton_build_dir/triton/build/cmake.linux-x86_64-cpython-3.10/_deps/googletest-src
+# cp target_detector.py /opt/conda/envs/titus-artifacts/lib/python3.10/site-packages/bitblas/utils/target_detector.py
+
+# git config --global --add safe.directory /home/chenyidong/tilus-artifacts/artifacts/triton_build_dir/triton/build/cmake.linux-x86_64-cpython-3.10/_deps/googletest-src

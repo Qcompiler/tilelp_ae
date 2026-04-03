@@ -49,7 +49,7 @@ DTYPE_TO_TORCH = {
     16: torch.float8_e4m3fn,
     17: torch.uint8,
     18: torch.uint8,
-    19: torch.float8_e8m0fnu,
+    # 19: torch.float8_e8m0fnu,
 }
 
 TORCH_TO_DTYPE = {
@@ -67,7 +67,7 @@ TORCH_TO_DTYPE = {
     torch.float8_e5m2: DType.FP8e5,
     torch.float8_e4m3fnuz: DType.FP8e4nuz,
     torch.float8_e5m2fnuz: DType.FP8e5nuz,
-    torch.float8_e8m0fnu: DType.E8M0,
+    # torch.float8_e8m0fnu: DType.E8M0,
 }
 
 TORCH_DTYPE_TO_TRITON = {
@@ -87,7 +87,7 @@ TORCH_DTYPE_TO_TRITON = {
     torch.float8_e5m2: tl.float8e5,#NVIDIA
     torch.float8_e4m3fnuz: tl.float8e4b8, #AMD
     torch.float8_e5m2fnuz: tl.float8e5b16, #AMD
-    torch.float8_e8m0fnu: tl.uint8,
+    # torch.float8_e8m0fnu: tl.uint8,
 }
 
 DTYPE_TO_TRITON = {k:TORCH_DTYPE_TO_TRITON[d] for k,d in DTYPE_TO_TORCH.items()}
